@@ -1,0 +1,28 @@
+{
+  "name": "pbs",
+  "version": "0.0.0",
+  "description": "Streaming protocol buffers encoder/decoder",
+  "main": "index.js",
+  "dependencies": {
+    "generate-function": "^2.0.0",
+    "protocol-buffers": "^2.7.0",
+    "readable-stream": "^1.0.33",
+    "varint": "^4.0.0"
+  },
+  "devDependencies": {
+    "standard": "^3.7.0"
+  },
+  "scripts": {
+    "test": "standard"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mafintosh/pbs.git"
+  },
+  "author": "Mathias Buus (@mafintosh)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mafintosh/pbs/issues"
+  },
+  "homepage": "https://github.com/mafintosh/pbs"
+}

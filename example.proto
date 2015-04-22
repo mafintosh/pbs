@@ -1,0 +1,10 @@
+message Test {
+  repeated bytes data = 1;
+  repeated Foo foo = 2;
+  repeated uint32 status = 3;
+
+  message Foo {
+    required string hello = 1;
+  }
+}
+
