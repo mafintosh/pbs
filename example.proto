@@ -1,10 +1,9 @@
-message Test {
-  repeated bytes data = 1;
-  repeated Foo foo = 2;
-  repeated uint32 status = 3;
-
-  message Foo {
-    required string hello = 1;
+message Company {
+  required string name = 1;
+  repeated Employee employees = 2;
+  optional string country = 3;
+  message Employee {
+    required string name = 1;
+    required uint32 age = 2;
   }
 }
-

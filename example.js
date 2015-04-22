@@ -1,17 +1,7 @@
 var pbs = require('./')
+var fs = require('fs')
 
-var messages = pbs(`
-  message Company {
-    required string name = 1;
-    repeated Employee employees = 2;
-    optional string country = 3;
-
-    message Employee {
-      required string name = 1;
-      required uint32 age = 2;
-    }
-  }
-`)
+var messages = pbs(fs.readFileSync('example.proto'))
 
 // create a streaming decoder
 var decoder = messages.Company.decode()
