@@ -5,15 +5,33 @@ var decoder = require('./decoder')
 module.exports = function (schema) {
   var pb = protobuf(schema)
 
-  var result = {}
+  // to not make toString,toJSON enumarable we make a fire-and-forget prototype
+  var Messages = function () {
+    var self = this
 
-  pb.toJSON().messages.forEach(function (m) {
-    result[m.name] = {
-      name: m.name,
-      encode: encoder(m, pb),
-      decode: decoder(m, pb)
-    }
-  })
+    pb.toJSON().enums.forEach(function (e) {
+      self[e.name] = e.values
+    })
 
-  return result
+    pb.toJSON().messages.forEach(function (m) {
+      var message = {}
+      m.enums.forEach(function (e) {
+        message[e.name] = e
+      })
+      message.name = m.name
+      message.encode = encoder(m, pb)
+      message.decode = decoder(m, pb)
+      self[m.name] = message
+    })
+  }
+
+  Messages.prototype.toString = function () {
+    return pb.toString()
+  }
+
+  Messages.prototype.toJSON = function () {
+    return pb.toJSON()
+  }
+
+  return new Messages()
 }
