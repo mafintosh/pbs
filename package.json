@@ -10,10 +10,12 @@
     "varint": "^4.0.0"
   },
   "devDependencies": {
-    "standard": "^3.7.0"
+    "concat-stream": "^1.4.8",
+    "standard": "^3.7.0",
+    "tape": "^4.0.0"
   },
   "scripts": {
-    "test": "standard"
+    "test": "standard && tape test/*.js"
   },
   "repository": {
     "type": "git",

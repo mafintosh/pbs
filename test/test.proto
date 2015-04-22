@@ -1,0 +1,7 @@
+message Test {
+  required string hello = 1;
+}
+
+message TestRepeated {
+  repeated string hello = 1;
+}
