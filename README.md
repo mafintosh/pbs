@@ -117,6 +117,62 @@ decoder.on('finish', function () {
 fs.createReadStream('my-protobuf-message.pb').pipe(decoder)
 ```
 
+## Use cases
+
+You can use this to parse large protobuf messages that might not fit in memory.
+
+Another use case is to use this to implement a streaming binary protocol encoder/decoder.
+Let's say I wanted to implement a chat protocol I could describe it using the following proto schema
+
+``` proto
+message ChatProtocol {
+  repeated Message messages = 1;
+  repeated string online = 2;
+
+  message Message {
+    required string from = 1;
+    required string text = 2;
+  }
+}
+```
+
+and then just use pbs to parse it
+
+``` js
+var fs = require('fs')
+var pbs = require('pbs')
+
+var messages = pbs(fs.readFileSync('schema.proto'))
+var decoder = messages.ChatProtocol.decode()
+
+// read messages
+
+decoder.online(function (username, cb) {
+  console.log(username + ' is online!')
+  cb()
+})
+
+decoder.messages(function (message, cb) {
+  console.log(message.from + ' says: ' + message.text)
+})
+
+// write messages
+
+var encoder = messages.ChatProtocol.encode()
+
+encoder.online('mafintosh')
+encoder.messages({
+  from: 'mafintosh',
+  text: 'hello world!'
+})
+
+// setup the pipeline
+encoder.pipe(someTransportStream).pipe(decoder)
+```
+
+Since the entire stream is valid protobuf you could even save it to a file
+and parse it using another protobuf parser to debug an application
+
 ## License
 
 MIT
