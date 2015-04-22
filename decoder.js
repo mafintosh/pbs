@@ -4,6 +4,8 @@ var encodings = require('protocol-buffers/encodings')
 var varint = require('varint')
 var genfun = require('generate-function')
 
+var SIGNAL_FLUSH = new Buffer([0])
+
 var prefixedEncodings = {
   bytes: function (data, offset, end) {
     if (!offset && data.length === end) return data
@@ -30,12 +32,14 @@ module.exports = function (message, protobuf) {
     this._prefix = -1
     this._missing = 0
     this._message = null
-    this._handlers = new Array(encoders.length)
-    for (var i = 0; i < this._handlers.length; i++) this._handlers[i] = dummy
-
     this._buffer = new Buffer(100)
     this._ptr = 0
     this._resultPtr = 0
+
+    this._received = []
+    for (var i = 0; i < message.fields.length; i++) this._received[i] = false
+    this._handlers = new Array(encoders.length)
+    for (var j = 0; j < this._handlers.length; j++) this._handlers[j] = dummy
   }
 
   util.inherits(Decoder, stream.Writable)
@@ -47,8 +51,17 @@ module.exports = function (message, protobuf) {
   message.fields.forEach(function (field, i) {
     encoders.push(prefixedEncodings[field.type] || (encodings[field.type] || protobuf[field.type] || protobuf[message.name][field.type]).decode)
     decode('case %d:', field.tag)
-    decode('this._handlers[%d](encoders[%d](packet, start, end), cb)', i, i)
-    decode('break')
+    if (!field.repeated) {
+      decode('if (this._received[%d]) return cb()', i)
+      decode('this._received[%d] = true', i)
+    }
+    decode('try {')
+    decode('var p%d = encoders[%d](packet, start, end)', i, i)
+    decode('} catch (err) {')
+    decode('return cb(err)')
+    decode('}')
+    decode('this._handlers[%d](p%d, cb)', i, i)
+    decode('break\n')
   })
 
   decode('default:')
@@ -114,11 +127,11 @@ module.exports = function (message, protobuf) {
     this._decode(packet, start, end, function (err) {
       if (err) return cb(err)
       called = true
-      if (!tick) self._parse(data, offset, cb)
+      if (!tick && !self._destroyed) self._parse(data, offset, cb)
     })
 
     tick = false
-    return called
+    return called && !self._destroyed
   }
 
   Decoder.prototype._parse = function (data, offset, cb) {
@@ -172,7 +185,33 @@ module.exports = function (message, protobuf) {
   }
 
   Decoder.prototype._write = function (data, enc, cb) {
+    if (this._destroyed) return cb()
+    if (data === SIGNAL_FLUSH) return this._finish(cb)
     this._parse(data, 0, cb)
+  }
+
+  Decoder.prototype._finish = function (cb) {
+    for (var i = 0; i < message.fields.length; i++) {
+      var f = message.fields[i]
+      if (f.required && !this._received[i]) return this.destroy(new Error('Did not receive required field: ' + f.name))
+    }
+    cb()
+  }
+
+  Decoder.prototype.destroy = function (err) {
+    if (this._destroyed) return
+    this._destroyed = true
+    if (err) this.emit('error', err)
+    this.emit('close')
+  }
+
+  Decoder.prototype.end = function (data, enc, cb) {
+    if (typeof data === 'function') return this.end(null, null, data)
+    if (typeof enc === 'function') return this.end(data, null, enc)
+
+    if (data) this.write(data)
+    if (!this._writableState.ending) this.write(SIGNAL_FLUSH)
+    stream.Writable.prototype.end.call(this, cb)
   }
 
   message.fields.forEach(function (field, i) {
