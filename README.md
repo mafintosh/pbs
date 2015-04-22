@@ -6,6 +6,8 @@ Streaming [protocol buffers](https://developers.google.com/protocol-buffers/) en
 npm install pbs
 ```
 
+[![build status](http://img.shields.io/travis/mafintosh/pbs.svg?style=flat)](http://travis-ci.org/mafintosh/pbs)
+
 ## Usage
 
 ``` js
