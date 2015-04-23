@@ -1,7 +1,6 @@
 var pbs = require('../')
 var protobuf = require('protocol-buffers')
 var tape = require('tape')
-var concat = require('concat-stream')
 var fs = require('fs')
 
 var schema = fs.readFileSync(__dirname + '/test.proto')
@@ -89,7 +88,7 @@ tape('decoder allows missing optional message', function (t) {
 
   var decoder = messages.TestOptional.decode()
 
-  decoder.on('finish', function (err) {
+  decoder.on('finish', function () {
     t.ok(true, 'everthing is fine')
     t.end()
   })

@@ -69,10 +69,11 @@ tape('encoder allows missing optional message', function (t) {
 
   var encoder = messages.TestOptional.encode()
 
-  encoder.on('end', function (err) {
+  encoder.on('end', function () {
     t.ok(true, 'everthing is fine')
     t.end()
   })
 
+  encoder.resume()
   encoder.finalize()
 })
