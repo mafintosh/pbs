@@ -35,7 +35,7 @@ var decoder = message.Company.decode()
 
 ## Encoding
 
-Use pbs to encode a protocol buffers message (no matter low large!) to a stream
+Use pbs to encode a protocol buffers message (no matter how large!) to a stream.
 
 The encoder stream will expose all properties of the protobuf message as methods on the
 stream that you can pass the value you want to write to.
@@ -80,10 +80,10 @@ other parser that follows the protobuf spec.
 
 ## Decoding
 
-Similar to encoding you can use pbs to decode a protobuf message
+Similar to encoding you can use pbs to decode a protobuf message.
 
-The decoder stream also exposes the properties as methods but instead of passing a value
-you pass a function that is called then that property is found in the stream
+The decoder stream also exposes the properties as methods, but instead of passing a value
+you pass a function that is called then that property is found in the stream.
 
 ``` js
 decoder.someProperty(fn)
@@ -122,9 +122,9 @@ fs.createReadStream('my-protobuf-message.pb').pipe(decoder)
 You can use this to parse large protobuf messages that might not fit in memory.
 
 Another use case is to use this to implement a streaming binary protocol encoder/decoder.
-Let's say I wanted to implement a chat protocol I could describe it using the following proto schema
+Let's say I wanted to implement a chat protocol. I could describe it using the following proto schema:
 
-``` proto
+```proto
 message ChatProtocol {
   repeated Message messages = 1;
   repeated string online = 2;
@@ -136,7 +136,7 @@ message ChatProtocol {
 }
 ```
 
-and then just use pbs to parse it
+and then just use pbs to parse it:
 
 ``` js
 var fs = require('fs')
@@ -170,8 +170,8 @@ encoder.messages({
 encoder.pipe(someTransportStream).pipe(decoder)
 ```
 
-Since the entire stream is valid protobuf you could even save it to a file
-and parse it using another protobuf parser to debug an application
+Since the entire stream is valid protobuf, you could even save it to a file
+and parse it using another protobuf parser to debug an application.
 
 ## License
 
