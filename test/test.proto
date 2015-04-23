@@ -5,3 +5,7 @@ message Test {
 message TestRepeated {
   repeated string hello = 1;
 }
+
+message TestOptional {
+  optional string hello = 1;
+}
