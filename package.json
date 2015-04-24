@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "generate-function": "^2.0.0",
-    "protocol-buffers": "^2.7.0",
+    "protocol-buffers": "^3.0.0",
     "readable-stream": "^1.0.33",
     "varint": "^4.0.0"
   },
