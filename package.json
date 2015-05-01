@@ -1,7 +1,7 @@
 {
   "name": "pbs",
   "version": "1.3.0",
-  "description": "Streaming protocol buffers encoder/decoder",
+  "description": "Streaming encoder/decoder for protocol buffers",
   "main": "index.js",
   "dependencies": {
     "generate-function": "^2.0.0",

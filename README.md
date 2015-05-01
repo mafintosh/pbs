@@ -1,6 +1,6 @@
 # pbs
 
-Streaming [protocol buffers](https://developers.google.com/protocol-buffers/) encoder/decoder
+Streaming encoder/decoder for [protocol buffers](https://developers.google.com/protocol-buffers/)
 
 ```
 npm install pbs
