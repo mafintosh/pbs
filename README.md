@@ -27,10 +27,10 @@ var messages = pbs(`
 `)
 
 // create a streaming encoder
-var encoder = message.Company.encode()
+var encoder = messages.Company.encode()
 
 // create a streaming decoder
-var decoder = message.Company.decode()
+var decoder = messages.Company.decode()
 ```
 
 ## Encoding
