@@ -97,6 +97,8 @@ module.exports = function (message, protobuf) {
     if (!message) {
       if (missing <= free) { // fast track - no copy
         this._missing = 0
+        this._ptr = 0
+        this._message = null
         if (!this._pushMessage(data, offset, offset + missing, data, offset + missing, cb)) return -1
         return offset + missing
       }
@@ -106,8 +108,9 @@ module.exports = function (message, protobuf) {
     data.copy(message, this._ptr, offset, offset + missing)
 
     if (missing <= free) {
-      this._message = null
       this._missing = 0
+      this._ptr = 0
+      this._message = null
       if (!this._pushMessage(message, 0, message.length, data, offset + missing, cb)) return -1
       return offset + missing
     }
