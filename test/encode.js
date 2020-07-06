@@ -3,8 +3,9 @@ var protobuf = require('protocol-buffers')
 var tape = require('tape')
 var concat = require('concat-stream')
 var fs = require('fs')
+var path = require('path')
 
-var schema = fs.readFileSync(__dirname + '/test.proto')
+var schema = fs.readFileSync(path.join(__dirname, 'test.proto'))
 var messages = pbs(schema)
 var pbMessages = protobuf(schema)
 
@@ -16,7 +17,7 @@ tape('encodes', function (t) {
 
   encoder.pipe(concat(function (data) {
     data = pbMessages.Test.decode(data)
-    t.same(data, {hello: 'world'}, 'encoded valid protobuf')
+    t.same(data, { hello: 'world' }, 'encoded valid protobuf')
     t.end()
   }))
 })
@@ -30,7 +31,7 @@ tape('encodes required field only once', function (t) {
 
   encoder.pipe(concat(function (data) {
     data = pbMessages.Test.decode(data)
-    t.same(data, {hello: 'world'}, 'encoded valid protobuf')
+    t.same(data, { hello: 'world' }, 'encoded valid protobuf')
     t.end()
   }))
 })
@@ -46,7 +47,7 @@ tape('encodes repeated', function (t) {
 
   encoder.pipe(concat(function (data) {
     data = pbMessages.TestRepeated.decode(data)
-    t.same(data, {hello: ['a', 'b', 'c']}, 'encoded valid protobuf arrays')
+    t.same(data, { hello: ['a', 'b', 'c'] }, 'encoded valid protobuf arrays')
     t.end()
   }))
 })

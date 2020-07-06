@@ -71,7 +71,7 @@ module.exports = function (message, protobuf) {
   decode('}')
   decode('}')
 
-  Decoder.prototype._decode = decode.toFunction({encoders: encoders})
+  Decoder.prototype._decode = decode.toFunction({ encoders: encoders })
 
   Decoder.prototype._parseVarint = function (data, offset, cb) {
     for (offset; offset < data.length; offset++) {
@@ -160,18 +160,18 @@ module.exports = function (message, protobuf) {
 
         switch (this._type) {
           case 1:
-          this._missing = 8
-          this._prefix = -1
-          break
+            this._missing = 8
+            this._prefix = -1
+            break
 
           case 3:
           case 4:
-          return cb(new Error('Groups are not supported'))
+            return cb(new Error('Groups are not supported'))
 
           case 5:
-          this._missing = 4
-          this._prefix = -1
-          break
+            this._missing = 4
+            this._prefix = -1
+            break
         }
       } else {
         if (this._type === 0) {

@@ -2,8 +2,9 @@ var pbs = require('../')
 var protobuf = require('protocol-buffers')
 var tape = require('tape')
 var fs = require('fs')
+var path = require('path')
 
-var schema = fs.readFileSync(__dirname + '/test.proto')
+var schema = fs.readFileSync(path.join(__dirname, 'test.proto'))
 var messages = pbs(schema)
 var pbMessages = protobuf(schema)
 
