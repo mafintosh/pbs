@@ -1,6 +1,6 @@
 var stream = require('readable-stream')
 var util = require('util')
-var encodings = require('protocol-buffers/encodings')
+var encodings = require('protocol-buffers-encodings')
 var varint = require('varint')
 
 var noop = function () {}
