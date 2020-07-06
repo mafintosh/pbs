@@ -1,6 +1,6 @@
 var stream = require('readable-stream')
 var util = require('util')
-var encodings = require('protocol-buffers/encodings')
+var encodings = require('protocol-buffers-encodings')
 var varint = require('varint')
 
 var noop = function () {}
@@ -55,7 +55,7 @@ module.exports = function (message, protobuf) {
 
       var offset = 0
       var len = e.encodingLength(data)
-      var buf = new Buffer(prefixLen + (e.message ? varint.encodingLength(len) : 0) + len)
+      var buf = Buffer.allocUnsafe(prefixLen + (e.message ? varint.encodingLength(len) : 0) + len)
 
       varint.encode(prefix, buf, offset)
       offset += varint.encode.bytes

@@ -5,17 +5,23 @@
   "main": "index.js",
   "dependencies": {
     "generate-function": "^2.0.0",
-    "protocol-buffers": "^3.0.0",
-    "readable-stream": "^1.0.33",
-    "varint": "^4.0.0"
+    "protocol-buffers": "^4.2.0",
+    "protocol-buffers-encodings": "^1.1.0",
+    "readable-stream": "^3.6.0",
+    "varint": "^5.0.0"
   },
   "devDependencies": {
-    "concat-stream": "^1.4.8",
-    "standard": "^3.7.0",
-    "tape": "^4.0.0"
+    "concat-stream": "^2.0.0",
+    "standard": "^14.3.4",
+    "tape": "^5.0.1"
   },
   "scripts": {
-    "test": "standard && tape test/*.js"
+    "lint": "standard",
+    "test": "tape test/*.js",
+    "prepublishOnly": "npm run lint && npm test"
+  },
+  "engines": {
+    "node": ">=10"
   },
   "repository": {
     "type": "git",

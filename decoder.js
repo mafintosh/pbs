@@ -1,10 +1,10 @@
 var stream = require('readable-stream')
 var util = require('util')
-var encodings = require('protocol-buffers/encodings')
+var encodings = require('protocol-buffers-encodings')
 var varint = require('varint')
 var genfun = require('generate-function')
 
-var SIGNAL_FLUSH = new Buffer([0])
+var SIGNAL_FLUSH = Buffer.from([0])
 
 var prefixedEncodings = {
   bytes: function (data, offset, end) {
@@ -32,7 +32,7 @@ module.exports = function (message, protobuf) {
     this._prefix = -1
     this._missing = 0
     this._message = null
-    this._buffer = new Buffer(100)
+    this._buffer = Buffer.allocUnsafe(100)
     this._ptr = 0
     this._resultPtr = 0
 
@@ -71,7 +71,7 @@ module.exports = function (message, protobuf) {
   decode('}')
   decode('}')
 
-  Decoder.prototype._decode = decode.toFunction({encoders: encoders})
+  Decoder.prototype._decode = decode.toFunction({ encoders: encoders })
 
   Decoder.prototype._parseVarint = function (data, offset, cb) {
     for (offset; offset < data.length; offset++) {
@@ -102,7 +102,7 @@ module.exports = function (message, protobuf) {
         if (!this._pushMessage(data, offset, offset + missing, data, offset + missing, cb)) return -1
         return offset + missing
       }
-      message = this._message = new Buffer(missing)
+      message = this._message = Buffer.allocUnsafe(missing)
     }
 
     data.copy(message, this._ptr, offset, offset + missing)
@@ -160,18 +160,18 @@ module.exports = function (message, protobuf) {
 
         switch (this._type) {
           case 1:
-          this._missing = 8
-          this._prefix = -1
-          break
+            this._missing = 8
+            this._prefix = -1
+            break
 
           case 3:
           case 4:
-          return cb(new Error('Groups are not supported'))
+            return cb(new Error('Groups are not supported'))
 
           case 5:
-          this._missing = 4
-          this._prefix = -1
-          break
+            this._missing = 4
+            this._prefix = -1
+            break
         }
       } else {
         if (this._type === 0) {
