@@ -15,7 +15,9 @@
     "tape": "^4.0.0"
   },
   "scripts": {
-    "test": "standard && tape test/*.js"
+    "lint": "standard",
+    "test": "tape test/*.js",
+    "prepublishOnly": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
